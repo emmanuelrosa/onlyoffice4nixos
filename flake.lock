@@ -1,0 +1,27 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1780228135,
+        "narHash": "sha256-Xf7HkCwnzaQYfkVqDuQzQdEZCOq6pyL3H3ifUJjFXWI=",
+        "owner": "emmanuelrosa",
+        "repo": "nixpkgs",
+        "rev": "2c99c3564bd0069804a6954fb419d43d04b3533d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emmanuelrosa",
+        "ref": "onlyoffice-vm",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
