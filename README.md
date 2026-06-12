@@ -10,13 +10,20 @@ The virtual machine is *super* minimalist, only providing onlyoffice, a terminal
 
 ## How to build the virtual machine
 
-To build the NixOS virtual machine, run:
+There are two virtual machines available:
+
+- `minimal` - This VM includes the fonts installed by default on NixOS.
+- `full` - This VM is based on `minimal`, but adds Google Fonts and increases the VM's CPU and memory usage.
+
+To build the `minimal` NixOS virtual machine, run:
 
 ```
-nixos-rebuild build-vm --flake github:emmanuelrosa/onlyoffice4nixos#onlyoffice-vm
+nixos-rebuild build-vm --flake github:emmanuelrosa/onlyoffice4nixos#minimal
 ```
 
-You should end up with a symlink in your working directory.
+Replace *minimal* in the command above with *full* to build the `full` virtual machine instead. However, beware: The *full* VM includes nearly 4,000 fonts. ONLYOFFICE running in the VM struggles mightly with this.
+
+Either way, you should end up with a symlink in your working directory.
 
 ## How to use the virtual machine
 
@@ -36,27 +43,11 @@ To shut down, use the virtual machine's menu; The bar's shutdown menu doesn't wo
 
 Aside from the symlink mentioned earlier, the virtual machine will create a nixos.qcow2 file. Once you're done with the virtual machine, you can delete both, the symlink (`result`) and the disk image (`nixos.qcow2`).
 
-# Making changes to the virtual machine
-
-The virtual machine only includes the default fonts provided by NixOS. Do you want to add more fonts? If so, see the following section:
-
-## How to modify the virtual machine
-
-- `git clone https://github.com/emmanuelrosa/onlyoffice4nixos.git`
-- `cd onlyoffice4nixos`
-- Open `configuration.nix` in a *text* editor; Ex. VIM.
-- Scroll down to where it says *fonts.packages*, which is around line 39.
-- Add the font packages you want; Ex `google-fonts`.
-- Save `configuration.nix`
-
-## Build and run the virtual machine
-
-- `nixos-rebuild build-vm --flake ./#onlyoffice-vm`
-- `./result/bin/run-nixos-vm`
-
 # What's included?
 
-The following is a non-exhaustive list of what's included in the virtual machine. It's not much since its only purpose is for testing onlyoffice font support on NixOS.
+The following is a non-exhaustive list of what's included in the *minimal* virtual machine. It's not much since its only purpose is for testing onlyoffice font support on NixOS.
+
+The *full* virtual machine is identical, but it adds the `google-fonts` package, which adds **many** more fonts to the virtual machine.
 
 ## Programs
 
@@ -94,3 +85,11 @@ The following is a non-exhaustive list of what's included in the virtual machine
 - LiberationSerif
 - LiberationSerif
 - NotoColorEmoji
+
+# PS
+
+If you want to test ONLYOFFICE with Google Fonts on bare-metal instead of using the VM, you can try this:
+
+```
+nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-desktopeditors
+```
