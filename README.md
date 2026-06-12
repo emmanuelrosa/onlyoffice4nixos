@@ -21,7 +21,7 @@ To build the `minimal` NixOS virtual machine, run:
 nixos-rebuild build-vm --flake github:emmanuelrosa/onlyoffice4nixos#minimal
 ```
 
-Replace *minimal* in the command above with *full* to build the `full` virtual machine instead. However, beware: The *full* VM includes nearly 4,000 fonts. ONLYOFFICE running in the VM struggles mightly with this.
+Replace *minimal* in the command above with *full* to build the `full` virtual machine instead. However, beware: The *full* VM includes nearly 4,000 fonts. ONLYOFFICE running in the VM struggles mightly with this due to the amount of I/O that hits the virtual disk.
 
 Either way, you should end up with a symlink in your working directory.
 
