@@ -88,8 +88,14 @@ The *full* virtual machine is identical, but it adds the `google-fonts` package,
 
 # PS
 
-If you want to test ONLYOFFICE with Google Fonts on bare-metal instead of using the VM, you can try this:
+If you want to test ONLYOFFICE on bare-metal instead of using the VM, you can try this:
 
 ```
-nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-desktopeditors
+nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-demo-minimal
+```
+
+or this ...
+
+```
+nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-demo-full
 ```

@@ -30,22 +30,35 @@
     };
 
     packages.x86_64-linux = let
+      system = "x86_64-linux";
+
       pkgs = import "${nixpkgs}" {
-        system = "x86_64-linux";
+        inherit system;
       };
+
+      minimalFontPackages = with pkgs; [
+        dejavu_fonts
+        freefont_ttf
+        gyre-fonts
+        liberation_ttf
+        unifont
+        noto-fonts-cjk-sans
+        noto-fonts-cjk-serif
+        noto-fonts-color-emoji 
+      ];
+
+      fullFontPackages = with pkgs; minimalFontPackages ++ [
+        google-fonts
+      ];
     in {
-      onlyoffice-desktopeditors = pkgs.onlyoffice-desktopeditors.override {
-        extraFontPackages = with pkgs; [
-          dejavu_fonts
-          freefont_ttf
-          gyre-fonts
-          liberation_ttf
-          unifont
-          noto-fonts-cjk-sans
-          noto-fonts-cjk-serif
-          noto-fonts-color-emoji 
-          google-fonts
-        ];
+      onlyoffice-desktopeditors = pkgs.onlyoffice-desktopeditors;
+
+      onlyoffice-demo-minimal = self.packages."${system}".onlyoffice-desktopeditors.override {
+        extraFontPackages = minimalFontPackages;
+      };
+
+      onlyoffice-demo-full = self.packages."${system}".onlyoffice-desktopeditors.override {
+        extraFontPackages = fullFontPackages;
       };
     };
   };
