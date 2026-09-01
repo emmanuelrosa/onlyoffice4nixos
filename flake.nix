@@ -2,7 +2,7 @@
   description = "A NixOS virtual machine demonstrating onlyoffice with fonts support.";
 
   inputs = {
-    nixpkgs.url = "github:emmanuelrosa/nixpkgs?ref=onlyoffice-vm";
+    nixpkgs.url = "github:emmanuelrosa/nixpkgs?ref=onlyoffice-update";
   };
 
   outputs = { self, nixpkgs }: {
@@ -11,10 +11,19 @@
     nixosConfigurations = {
       onlyoffice-vm = self.nixosConfigurations.minimal;
 
+      micro = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          self.nixosModules.tuigreet
+          ./micro.nix
+        ];
+      };
+
       minimal = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           self.nixosModules.tuigreet
+          ./micro.nix
           ./minimal.nix
         ];
       };
@@ -23,6 +32,7 @@
         system = "x86_64-linux";
         modules = [
           self.nixosModules.tuigreet
+          ./micro.nix
           ./minimal.nix
           ./full.nix
         ];

@@ -10,8 +10,9 @@ The virtual machine is *super* minimalist, only providing onlyoffice, a terminal
 
 ## How to build the virtual machine
 
-There are two virtual machines available:
+There are three virtual machines available:
 
+- `micro` - This VM installs only a minimal set of fonts.
 - `minimal` - This VM includes the fonts installed by default on NixOS.
 - `full` - This VM is based on `minimal`, but adds Google Fonts and increases the VM's CPU and memory usage.
 

@@ -2,16 +2,16 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1782956758,
-        "narHash": "sha256-okCpiyKtrgjRbkzTYFdw7s7DsxWHtbsIenESXcwPAm4=",
+        "lastModified": 1788234613,
+        "narHash": "sha256-cN79kTIR9Y0aME8TiPScd5wp/Tx9fId+R0j7EQiGmt8=",
         "owner": "emmanuelrosa",
         "repo": "nixpkgs",
-        "rev": "6ca42928717d9f1d48de3dc9cb79f15c17abe99c",
+        "rev": "156a0b2e84faa41250a1ff6141acf456cf5e91ff",
         "type": "github"
       },
       "original": {
         "owner": "emmanuelrosa",
-        "ref": "onlyoffice-vm",
+        "ref": "onlyoffice-update",
         "repo": "nixpkgs",
         "type": "github"
       }

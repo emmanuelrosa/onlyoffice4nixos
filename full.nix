@@ -5,6 +5,8 @@
     memorySize = 8192;
   };
 
+  programs.onlyoffice.extraFontPackages = lib.mkForce [ ];
+
   fonts.packages = with pkgs; [
     google-fonts 
   ];
