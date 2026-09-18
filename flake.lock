@@ -1,23 +1,40 @@
 {
   "nodes": {
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1788234613,
-        "narHash": "sha256-cN79kTIR9Y0aME8TiPScd5wp/Tx9fId+R0j7EQiGmt8=",
+        "lastModified": 1780222723,
+        "narHash": "sha256-slX6L7WT3xMfxcWkoBPG0heFoAKuLYgiPkfmX0AgHqQ=",
         "owner": "emmanuelrosa",
         "repo": "nixpkgs",
-        "rev": "156a0b2e84faa41250a1ff6141acf456cf5e91ff",
+        "rev": "c16db5827622adb804336437d250df477a30994a",
         "type": "github"
       },
       "original": {
         "owner": "emmanuelrosa",
-        "ref": "onlyoffice-update",
+        "ref": "master",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
+        "flake-compat": "flake-compat",
         "nixpkgs": "nixpkgs"
       }
     }

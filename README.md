@@ -1,102 +1,116 @@
-# What is this?
+# ONLYOFFICE4NIXOS
 
-This repository is a Nix flake containing a NixOS virtual machine you can use to test ONLYOFFICE DesktopEditors with good font support, as implemted in Nixpkgs PR [526315](https://github.com/NixOS/nixpkgs/pull/526315).
+This repository is a Nix flake containing a package for ONLYOFFICE DesktopEditors, as suggested in Nixpkgs PR [526315](https://github.com/NixOS/nixpkgs/pull/526315).
 
-The virtual machine is *super* minimalist, only providing onlyoffice, a terminal, and labwc as a Wayland compositor. A sample document is provided (in the `Documents` directory).
-
-![screenshot](screenshot.png)
+The package adds the ability to bundle additional fonts, as a workaround for the issue decribed in [https://github.com/ONLYOFFICE/DocumentServer/issues/1859](https://github.com/ONLYOFFICE/DocumentServer/issues/1859).
 
 # Getting started
 
-## How to build the virtual machine
+How you add this package to your NixOS configuration will depend on whether you are using Nix flakes, or not:
 
-There are three virtual machines available:
+## Installation with Nix flakes
 
-- `micro` - This VM installs only a minimal set of fonts.
-- `minimal` - This VM includes the fonts installed by default on NixOS.
-- `full` - This VM is based on `minimal`, but adds Google Fonts and increases the VM's CPU and memory usage.
+Edit your `flake.nix` to add this repository to your `inputs`:
 
-To build the `minimal` NixOS virtual machine, run:
-
+**flake.nix**
 ```
-nixos-rebuild build-vm --flake github:emmanuelrosa/onlyoffice4nixos#minimal
+inputs.onlyoffice4nixos.url = "github:emmanuelrosa/onlyoffice4nixos";
 ```
 
-Replace *minimal* in the command above with *full* to build the `full` virtual machine instead. However, beware: The *full* VM includes nearly 4,000 fonts. ONLYOFFICE running in the VM struggles mightly with this due to the amount of I/O that hits the virtual disk.
+Next, you need to get `onlyoffice4nixos` into your flake outputs. There are different ways to do this. Here's one way:
 
-Either way, you should end up with a symlink in your working directory.
-
-## How to use the virtual machine
-
-To run the Qemu/KVM virtual machine, run:
-
+**flake.nix**
 ```
-./result/bin/run-nixos-vm
+  outputs = { self, nixpkgs, onlyoffice4nixos }@attrs: {
+    ...
+  };
 ```
 
-The VM should automatically log you in as *johngalt*, but in case you need the password, it's *onlyoffice*.
+Next, add `onlyoffice4nixos` to your NixOS configuration. This example uses `@attrs` to do this:
 
-Once logged in, you can get access to onlyoffice using the menu on the bottom left of the screen, or by rlight-clicking on the desktop.
-
-To shut down, use the virtual machine's menu; The bar's shutdown menu doesn't work.
-
-## How to clean up after the virtual machine
-
-Aside from the symlink mentioned earlier, the virtual machine will create a nixos.qcow2 file. Once you're done with the virtual machine, you can delete both, the symlink (`result`) and the disk image (`nixos.qcow2`).
-
-# What's included?
-
-The following is a non-exhaustive list of what's included in the *minimal* virtual machine. It's not much since its only purpose is for testing onlyoffice font support on NixOS.
-
-The *full* virtual machine is identical, but it adds the `google-fonts` package, which adds **many** more fonts to the virtual machine.
-
-## Programs
-
-- Terminal: alacritty
-- onlyoffice (desktop editors) 
-- labwc
-- labwc-menu-generator
-- swaybg
-- sfwbar
-- greetd
-- tuigreet 
-
-## Fonts
-
-- NotoSansCJK-VF
-- texgyreadventor
-- texgyrebonum
-- texgyrechorus
-- texgyreheros
-- texgyreheroscn
-- texgyrepagella
-- texgyreschola
-- texgyretermes
-- unifont
-- DejaVuMathTeXGyre
-- DejaVuSans
-- DejaVuSerif
-- FreeMono
-- FreeSans
-- FreeSerif
-- LiberationMono
-- LiberationSans
-- LiberationSerif
-- LiberationSerif
-- LiberationSerif
-- LiberationSerif
-- NotoColorEmoji
-
-# PS
-
-If you want to test ONLYOFFICE on bare-metal instead of using the VM, you can try this:
-
+**flake.nix**
 ```
-nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-demo-minimal
+  outputs = { self, nixpkgs, onlyoffice4nixos }@attrs: {
+    nixosConfigurations."nixos" = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = attrs;
+      modules = [
+        ./configuration.nix
+      ];
+    };
+  };
 ```
 
-or this ...
+Finally, edit your `configuration.nix` to add the `onlyoffice-desktopeditors` package to your `systemPackages`: 
+
+**configuration.nix**
+```
+{inputs, pkgs, ...}: {
+  environment.systemPackages = [
+    (onlyoffice4nixos.packages.x86_64-linux.onlyoffice-desktopeditors.override {
+      # Optionally, add the fonts you want to bundle with ONLYOFFICE:
+      extraFontPackages = with pkgs; [
+        noto-fonts-cjk-sans
+        nanum
+        pretendard
+        liberation_ttf
+      ];
+    })
+  ];
+}
+```
+
+## Installation with npins
+
+First, add this repo using npins:
 
 ```
-nix run github:emmanuelrosa/onlyoffice4nixos#onlyoffice-demo-full
+npins add github emmanuelrosa onlyoffice4nixos
+```
+
+Finally, edit your `configuration.nix` to add the `onlyoffice-desktopeditors` package to your `systemPackages`: 
+
+**configuration.nix**
+```
+  let
+    sources = import ./npins;
+  in {
+    environment.systemPackages = [
+      ((import sources.onlyoffice-desktopeditors).override {
+        # Optionally, add the fonts you want to bundle with ONLYOFFICE:
+        extraFontPackages = with pkgs; [
+          noto-fonts-cjk-sans
+          nanum
+          pretendard
+          liberation_ttf
+        ];
+      })
+    ];
+  }
+}
+```
+
+## Installation with plain Nix
+
+Edit your `configuration.nix` to add the `onlyoffice-desktopeditors` package to your `systemPackages`: 
+
+**configuration.nix**
+```
+  let
+    rev = "A GIT REVISION GOES HERE";
+    onlyoffice4nixos = import (fetchTarball "https://github.com/emmanuelrosa/onlyoffice4nixos/archive/${rev}.tar.gz") { };
+  in {
+    environment.systemPackages = [
+      (onlyoffice4nixos.onlyoffice-desktopeditors.override {
+        # Optionally, add the fonts you want to bundle with ONLYOFFICE:
+        extraFontPackages = with pkgs; [
+          noto-fonts-cjk-sans
+          nanum
+          pretendard
+          liberation_ttf
+        ];
+      })
+    ];
+  }
+}
 ```
