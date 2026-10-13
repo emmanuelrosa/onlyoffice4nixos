@@ -17,6 +17,14 @@
     in {
       default = self.packages."${system}".onlyoffice-desktopeditors;
       onlyoffice-desktopeditors = pkgs.callPackage ./package.nix { };
+      example = self.packages."${system}".onlyoffice-desktopeditors.override {
+        extraFontPackages = with pkgs; [
+          noto-fonts-cjk-sans
+          nanum
+          pretendard
+          liberation_ttf
+        ];
+      };
     };
   };
 }
