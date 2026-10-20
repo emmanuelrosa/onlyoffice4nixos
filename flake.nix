@@ -16,7 +16,7 @@
       };
     in {
       default = self.packages."${system}".onlyoffice-desktopeditors;
-      onlyoffice-desktopeditors = pkgs.callPackage ./package.nix { };
+      onlyoffice-desktopeditors = pkgs.lib.warn "onlyoffice4nixos is deprecated. Changes are now in Nixpkgs. See https://github.com/NixOS/nixpkgs/pull/571532" pkgs.callPackage ./package.nix { };
       example = self.packages."${system}".onlyoffice-desktopeditors.override {
         extraFontPackages = with pkgs; [
           noto-fonts-cjk-sans

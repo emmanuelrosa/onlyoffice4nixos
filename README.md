@@ -1,8 +1,15 @@
-# ONLYOFFICE4NIXOS
+# ONLYOFFICE4NIXOS (deprecated)
 
 This repository is a Nix flake containing a package for ONLYOFFICE DesktopEditors, as suggested in Nixpkgs PR [526315](https://github.com/NixOS/nixpkgs/pull/526315).
 
 The package adds the ability to bundle additional fonts, as a workaround for the issue decribed in [https://github.com/ONLYOFFICE/DocumentServer/issues/1859](https://github.com/ONLYOFFICE/DocumentServer/issues/1859).
+
+# News
+
+The improvements provided by this flake are now included in Nixpkgs. Hence, this Nix flake is deprecated.
+
+- Font fix - https://github.com/NixOS/nixpkgs/pull/571532.
+- Update to version 10 - https://github.com/NixOS/nixpkgs/pull/575151.
 
 # Getting started
 
